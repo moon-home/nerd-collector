@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "916806684305",
+    "project_id": "nerd-collector",
+    "storage_bucket": "nerd-collector.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916806684305:android:3cdd95e13f82d72e4ab930",
+        "android_client_info": {
+          "package_name": "com.nerdcollector.nerdcollector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916806684305-gd462i60uondea41c442a1s1mt73tacl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIH9DLRfrYqztMb6K0cqxwoQiYa76Ny7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916806684305-gd462i60uondea41c442a1s1mt73tacl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
