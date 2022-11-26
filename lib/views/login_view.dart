@@ -61,10 +61,18 @@ class _LoginViewState extends State<LoginView> {
                   password: password,
                 );
                 devtools.log('User logged in');
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  homeRoute,
-                  (route) => false,
-                );
+                final user = FirebaseAuth.instance.currentUser;
+                if (user?.emailVerified ?? false) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    homeRoute,
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyEmailRoute,
+                    (route) => false,
+                  );
+                }
               } on FirebaseAuthException catch (e) {
                 devtools.log(e.toString());
                 await errorDialogue(
@@ -83,7 +91,7 @@ class _LoginViewState extends State<LoginView> {
               );
             },
             child: const Text(
-              'Resgiter here',
+              'Register here',
             ),
           ),
         ],
