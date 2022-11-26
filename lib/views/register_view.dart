@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:nerdcollector/constants/routes.dart';
+import 'package:nerdcollector/services/auth/auth_exceptions.dart';
+import 'package:nerdcollector/services/auth/auth_service.dart';
 import 'package:nerdcollector/utilities/show_error_dialogue.dart';
 
 class RegisterView extends StatefulWidget {
@@ -54,21 +55,31 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await AuthService.firebase().createUser(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                user?.sendEmailVerification();
-                devtools.log(
-                    'userCredential: ${userCredential.toString()}, user: ${user.toString()}');
+                AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed(verifyEmailRoute);
-              } on FirebaseAuthException catch (e) {
-                devtools.log(e.toString());
+              } on WeakPasswordAuthException {
                 await errorDialogue(
                   context,
-                  e.toString().split(' ').sublist(1).join(' '),
+                  'Weak password',
+                );
+              } on InvalidEmailAuthException {
+                await errorDialogue(
+                  context,
+                  'Invalid email',
+                );
+              } on EmailAlreadyInUseAuthException {
+                await errorDialogue(
+                  context,
+                  'Email already in use',
+                );
+              } on GenericAuthException {
+                await errorDialogue(
+                  context,
+                  'Failed to register',
                 );
               }
             },

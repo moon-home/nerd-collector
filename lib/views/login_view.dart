@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer' as devtools show log;
-
 import 'package:nerdcollector/constants/routes.dart';
+import 'package:nerdcollector/services/auth/auth_exceptions.dart';
+import 'package:nerdcollector/services/auth/auth_service.dart';
 import 'package:nerdcollector/utilities/show_error_dialogue.dart';
 
 class LoginView extends StatefulWidget {
@@ -56,13 +56,13 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
                 devtools.log('User logged in');
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     homeRoute,
                     (route) => false,
@@ -73,11 +73,20 @@ class _LoginViewState extends State<LoginView> {
                     (route) => false,
                   );
                 }
-              } on FirebaseAuthException catch (e) {
-                devtools.log(e.toString());
+              } on UserNotFoundAuthException {
                 await errorDialogue(
                   context,
-                  e.toString().split(' ').sublist(1).join(' '),
+                  "User not found",
+                );
+              } on WrongPasswordAuthException {
+                await errorDialogue(
+                  context,
+                  "Wrong password",
+                );
+              } on GenericAuthException {
+                await errorDialogue(
+                  context,
+                  "Authentification error",
                 );
               }
             },
