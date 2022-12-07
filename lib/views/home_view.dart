@@ -4,6 +4,8 @@ import 'package:nerdcollector/constants/routes.dart';
 import 'package:nerdcollector/services/auth/auth_service.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:nerdcollector/views/camera_view.dart';
+
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -12,40 +14,62 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  // if (snapshot.data == null){
+  //   final snapdata = snapshot.data;
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nerd Collector'),
-        actions: [
-          PopupMenuButton<MenuAction>(
-            onSelected: (value) async {
-              devtools.log(
-                value.toString(),
-              );
-              switch (value) {
-                case MenuAction.logout:
-                  final isLogout = await logoutDialogue(context);
-                  if (isLogout) {
-                    devtools.log('User logged out');
-                    await AuthService.firebase().logOut();
-                    Navigator.of(context)
-                        .pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                  }
-              }
-            },
-            itemBuilder: (context) {
-              return const [
-                PopupMenuItem<MenuAction>(
-                  value: MenuAction.logout,
-                  child: Text('Logout'),
-                ),
-              ];
-            },
-          )
-        ],
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Nerd Collector'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.photo_camera)),
+              Tab(icon: Icon(Icons.favorite_border_outlined)),
+              Tab(icon: Icon(Icons.public)),
+              Tab(icon: Icon(Icons.settings)),
+            ],
+          ),
+          actions: [
+            PopupMenuButton<MenuAction>(
+              onSelected: (value) async {
+                devtools.log(
+                  value.toString(),
+                );
+                switch (value) {
+                  case MenuAction.logout:
+                    final isLogout = await logoutDialogue(context);
+                    if (isLogout) {
+                      devtools.log('User logged out');
+                      await AuthService.firebase().logOut();
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil(loginRoute, (_) => false);
+                    }
+                }
+              },
+              itemBuilder: (context) {
+                return const [
+                  PopupMenuItem<MenuAction>(
+                    value: MenuAction.logout,
+                    child: Text('Logout'),
+                  ),
+                ];
+              },
+            )
+          ],
+        ),
+        body: const TabBarView(
+          children: [
+            CameraView(),
+            Icon(Icons.favorite_border_outlined),
+            Icon(Icons.public),
+            Icon(Icons.settings),
+          ],
+        ),
       ),
-      body: const Text('something'),
     );
   }
 }

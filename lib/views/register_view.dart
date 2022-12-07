@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:nerdcollector/constants/routes.dart';
 import 'package:nerdcollector/services/auth/auth_exceptions.dart';
 import 'package:nerdcollector/services/auth/auth_service.dart';

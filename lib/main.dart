@@ -7,7 +7,7 @@ import 'package:nerdcollector/views/register_view.dart';
 import 'package:nerdcollector/views/verify_email_view.dart';
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized;
+  WidgetsFlutterBinding.ensureInitialized;
   runApp(MaterialApp(
     title: 'Welcome to Flutter',
     theme: ThemeData(primarySwatch: Colors.amber),
@@ -26,7 +26,6 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final wordPair = WordPair.random();
     return FutureBuilder(
       future: AuthService.firebase().initliaze(),
       builder: ((context, snapshot) {

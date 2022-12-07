@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nerdcollector/services/auth/auth_exceptions.dart';
 import 'package:nerdcollector/services/auth/auth_provider.dart';
 import 'package:nerdcollector/services/auth/auth_user.dart';
+import 'dart:developer' as devtools show log;
 
 void main() {
   group('Mock Authrntification', () {
@@ -84,7 +85,7 @@ class MockAuthProvider implements AuthProvider {
       {required String email, required String password}) async {
     if (!isInitialized) throw NotInitializedException();
     await Future.delayed(const Duration(seconds: 1));
-    print('BEFORE email: $email');
+    devtools.log('BEFORE email: $email');
     return logIn(
       email: email,
       password: password,
