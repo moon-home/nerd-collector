@@ -5,6 +5,7 @@ import 'package:nerdcollector/services/auth/auth_service.dart';
 import 'dart:developer' as devtools show log;
 
 import 'package:nerdcollector/views/camera_view.dart';
+import 'package:nerdcollector/views/audio_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -64,7 +65,8 @@ class _HomeViewState extends State<HomeView> {
         body: const TabBarView(
           children: [
             CameraView(),
-            Icon(Icons.favorite_border_outlined),
+            AudioView(),
+            // Icon(Icons.favorite_border_outlined),
             Icon(Icons.public),
             Icon(Icons.settings),
           ],
